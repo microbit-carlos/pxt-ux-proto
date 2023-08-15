@@ -1,0 +1,10 @@
+{
+    "name": "acc_magnitude",
+    "description": "description.",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "acc_magnitude.ts"
+    ]
+}
