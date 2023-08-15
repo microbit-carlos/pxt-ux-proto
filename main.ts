@@ -31,11 +31,13 @@ if (isBatteryLow()) {
             `)
     }
 }
-basic.showNumber(accMagnitude.example())
-basic.showNumber(accMagnitude.getMagnitude())
 basic.forever(function () {
     if (logging) {
         startLogging()
     }
     basic.showIcon(IconNames.No)
+    serial.writeNumber(custom.getMagnitude())
+    serial.writeLine("")
+    serial.writeNumber(accMagnitude.getMagnitude())
+    serial.writeLine("\n")
 })
