@@ -31,7 +31,8 @@ if (isBatteryLow()) {
             `)
     }
 }
-basic.showNumber(acc_magnitude.example())
+basic.showNumber(accMagnitude.example())
+basic.showNumber(accMagnitude.getMagnitude())
 basic.forever(function () {
     if (logging) {
         startLogging()
