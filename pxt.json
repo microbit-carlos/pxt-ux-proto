@@ -5,8 +5,7 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "datalogger": "*",
-        "acc_magnitude": "file:libs/acc_magnitude"
+        "datalogger": "*"
     },
     "files": [
         "main.blocks",

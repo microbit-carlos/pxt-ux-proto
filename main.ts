@@ -36,8 +36,6 @@ basic.forever(function () {
         startLogging()
     }
     basic.showIcon(IconNames.No)
-    serial.writeNumber(custom.getMagnitude())
+    serial.writeNumber(custom.accelerometerMagnitude())
     serial.writeLine("")
-    serial.writeNumber(accMagnitude.getMagnitude())
-    serial.writeLine("\n")
 })
