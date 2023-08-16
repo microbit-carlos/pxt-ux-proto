@@ -1,9 +1,29 @@
-function isBatteryLow() {
-    return custom.getBatteryMilliVolts() < 2400
-}
+datalogger.onLogFull(function () {
+    music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
+    basic.showLeds(`
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        `)
+    // Empty loop to ensure no other fibers run
+    while (true) {
+    	
+    }
+})
+
+input.onButtonPressed(Button.AB, function () {
+    logging = !(logging)
+    if (logging) {
+        music._playDefaultBackground(music.builtInPlayableMelody(Melodies.JumpUp), music.PlaybackMode.InBackground)
+    } else {
+        music._playDefaultBackground(music.builtInPlayableMelody(Melodies.JumpDown), music.PlaybackMode.InBackground)
+    }
+})
 
 let logging = false
-if (isBatteryLow()) {
+if (custom.getBatteryMilliVolts() < 2400) {
     while (true) {
         basic.showLeds(`
             . . . . .
@@ -21,43 +41,31 @@ if (isBatteryLow()) {
             `)
     }
 }
-custom.init()
+custom.initCustomCode()
 datalogger.includeTimestamp(FlashLogTimeStampFormat.Seconds)
 datalogger.setColumnTitles("activity")
 datalogger.mirrorToSerial(true)
 
-datalogger.onLogFull(function () {
-    music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
-    basic.showLeds(`
-        # # # # #
-        # # # # #
-        # # # # #
-        # # # # #
-        # # # # #
-        `)
-    while (true) {
-    	
-    }
-})
-
-input.onButtonPressed(Button.AB, function () {
-    logging = !(logging)
-})
-
 loops.everyInterval(20, function () {
     custom.captureAccSample()
-})
-
-loops.everyInterval(5000, function () {
-    if (logging) {
-        datalogger.log(datalogger.createCV("activity", custom.getCalculatedAverage()))
-    }
 })
 
 basic.forever(function () {
     if (logging) {
         basic.showIcon(IconNames.Yes)
     } else {
-        basic.showIcon(IconNames.No)
+        basic.showLeds(`
+            . . . . .
+            . # # # .
+            . # # # .
+            . # # # .
+            . . . . .
+            `)
+    }
+})
+
+loops.everyInterval(5000, function () {
+    if (logging) {
+        datalogger.log(datalogger.createCV("activity", custom.getCalculatedAverage()))
     }
 })
