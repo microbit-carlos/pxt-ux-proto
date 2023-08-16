@@ -1,18 +1,8 @@
-function isBatteryLow () {
-    return false
+function isBatteryLow() {
+    return custom.getBatteryMilliVolts() < 2400
 }
-input.onButtonPressed(Button.AB, function () {
-    logging = !(logging)
-})
-function startLogging () {
-    basic.showIcon(IconNames.Yes)
-    while (logging) {
-        serial.writeLine("logging")
-        basic.pause(2000)
-    }
-}
+
 let logging = false
-logging = false
 if (isBatteryLow()) {
     while (true) {
         basic.showLeds(`
@@ -31,11 +21,43 @@ if (isBatteryLow()) {
             `)
     }
 }
+custom.init()
+datalogger.includeTimestamp(FlashLogTimeStampFormat.Seconds)
+datalogger.setColumnTitles("activity")
+datalogger.mirrorToSerial(true)
+
+datalogger.onLogFull(function () {
+    music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
+    basic.showLeds(`
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        `)
+    while (true) {
+    	
+    }
+})
+
+input.onButtonPressed(Button.AB, function () {
+    logging = !(logging)
+})
+
+loops.everyInterval(20, function () {
+    custom.captureAccSample()
+})
+
+loops.everyInterval(5000, function () {
+    if (logging) {
+        datalogger.log(datalogger.createCV("activity", custom.getCalculatedAverage()))
+    }
+})
+
 basic.forever(function () {
     if (logging) {
-        startLogging()
+        basic.showIcon(IconNames.Yes)
+    } else {
+        basic.showIcon(IconNames.No)
     }
-    basic.showIcon(IconNames.No)
-    serial.writeNumber(custom.accelerometerMagnitude())
-    serial.writeLine("")
 })
