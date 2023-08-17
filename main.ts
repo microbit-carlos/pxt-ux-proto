@@ -1,3 +1,7 @@
+datalogger.onLogFull(function () {
+    logFull = true
+})
+
 input.onButtonPressed(Button.AB, function () {
     logging = !(logging)
     if (logging) {
@@ -8,6 +12,7 @@ input.onButtonPressed(Button.AB, function () {
 })
 
 let logging = false
+let logFull = false
 if (custom.getBatteryMilliVolts() < 2400) {
     while (true) {
         basic.showLeds(`
@@ -50,7 +55,7 @@ basic.forever(function () {
 })
 
 loops.everyInterval(5000, function () {
-    if (logging) {
+    if (logging && !(logFull)) {
         datalogger.log(datalogger.createCV("activity", custom.getCalculatedAverage()))
     }
 })
