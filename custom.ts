@@ -39,7 +39,7 @@ namespace custom {
     //% shim=custom::accelerometer_magnitude
     //% block
     export function accelerometerMagnitude(): number {
-        return 12345;
+        return input.acceleration(Dimension.Strength);
     }
 
     /**

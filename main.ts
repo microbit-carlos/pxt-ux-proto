@@ -1,18 +1,3 @@
-datalogger.onLogFull(function () {
-    music._playDefaultBackground(music.builtInPlayableMelody(Melodies.PowerDown), music.PlaybackMode.InBackground)
-    basic.showLeds(`
-        # # # # #
-        # # # # #
-        # # # # #
-        # # # # #
-        # # # # #
-        `)
-    // Empty loop to ensure no other fibers run
-    while (true) {
-    	
-    }
-})
-
 input.onButtonPressed(Button.AB, function () {
     logging = !(logging)
     if (logging) {
